@@ -1,0 +1,98 @@
+[project]
+name = 'gas'
+description = 'Manage Google Apps Script projects from the command line.'
+license = {file = 'LICENSE'}
+keywords = ['cli', 'apps-script', 'javascript']
+classifiers = [
+  'Topic :: Programming Language :: JavaScript',
+  'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+  'Operating System :: POSIX',
+]
+authors = [
+  {name = 'Mike Castle', email = 'dalgoda@gmail.com'},
+]
+dependencies = [
+  'mundane>=1.dev140',
+]
+dynamic = ['version']
+
+[project.scripts]
+gas = 'gas.__main__:main'
+
+[project.urls]
+Repository = 'https://github.com/nexushoratio/gas'
+Issues = 'https://github.com/nexushoratio/gas/issues'
+
+[build-system]
+requires = ['setuptools', 'setuptools-scm']
+build-backend = 'setuptools.build_meta'
+
+[tool.setuptools_scm]
+
+[tool.yapf]
+column_limit = 78
+dedent_closing_brackets = true
+join_multiple_lines = false
+space_between_ending_comma_and_closing_bracket = false
+split_before_arithmetic_operator = true
+split_before_dot = true
+split_before_first_argument = true
+split_complex_comprehension = true
+
+[tool.isort]
+profile = 'google'
+known_first_party = ['mundane']
+known_local_folder = ['gas']
+
+[tool.pylint]
+fail-on = ['I']
+docstring-min-length = 2
+good-names = ["setUpModule"]
+max-line-length = 78
+no-docstring-rgx = "(^__|_?test.*|.*Test)"
+
+exclude-protected = [
+  '_mapping',
+]
+
+disable = [
+  'use-dict-literal',
+  'use-list-literal',
+]
+enable = [
+  'useless-suppression'
+]
+
+notes = ["FIXME"]
+
+[tool.mypy]
+files = 'gas'
+
+[tool.coverage.run]
+branch = true
+data_file = '.coverage/data_file'
+command_line = '-m unittest discover -p *_test.py'
+source = ['.']
+
+[tool.coverage.html]
+directory = '.coverage/html'
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py3
+skipsdist = True
+isolated_build = True
+
+[testenv]
+passenv = PYTHON*
+sitepackages = True
+commands =
+    python -m yapf -i -r gas
+    python -m isort gas
+    python -m pylint gas
+    python -m mypy
+    python -m coverage run
+    # python -m coverage report
+    # python -m coverage html --fail-under 49
+"""
