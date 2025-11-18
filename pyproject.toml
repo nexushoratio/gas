@@ -13,6 +13,7 @@ authors = [
 ]
 dependencies = [
   'mundane>=1.dev140',
+  'google-auth-oauthlib>=0.4.2',
 ]
 dynamic = ['version']
 
@@ -67,6 +68,12 @@ notes = ["FIXME"]
 
 [tool.mypy]
 files = 'gas'
+warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = ["google_auth_oauthlib.*"]
+ignore_missing_imports = true
+
 
 [tool.coverage.run]
 branch = true

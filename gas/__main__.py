@@ -9,6 +9,8 @@ import typing
 from mundane import app
 from mundane import log_mgr
 
+from gas import auth
+
 
 def main() -> typing.NoReturn:
     """The GAS app."""
@@ -16,7 +18,7 @@ def main() -> typing.NoReturn:
     gas_app = app.ArgparseApp(
         use_log_mgr=True, use_docstring_for_description=sys.modules[__name__]
     )
-    modules = ()
+    modules = (auth,)
     gas_app.register_global_flags(modules)
     gas_app.register_shared_flags(modules)
     gas_app.register_commands(modules)
